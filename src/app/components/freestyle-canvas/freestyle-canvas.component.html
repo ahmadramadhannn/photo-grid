@@ -1,0 +1,43 @@
+<div class="freestyle" #freestyleArea (click)="onCanvasClick()" (dragover)="onCanvasDragOver($event)"
+    (dragleave)="onCanvasDragLeave($event)" (drop)="onCanvasDrop($event)"
+    [class.freestyle--drag-over]="isDragOverCanvas()">
+    @if (photos().length === 0) {
+    <div class="freestyle__empty">
+        <div class="freestyle__empty-icon">✦</div>
+        <p class="freestyle__empty-title">Freestyle Mode</p>
+        <p class="freestyle__empty-desc">Drop photos here or click the button below</p>
+        <button class="freestyle__add-btn gradient-border" (click)="onAddPhotos(); $event.stopPropagation()"
+            id="add-freestyle-photos">
+            + Add Photos
+        </button>
+    </div>
+    } @else {
+    <!-- Floating add button -->
+    <button class="freestyle__fab" (click)="onAddPhotos(); $event.stopPropagation()" title="Add more photos"
+        id="fab-add-photos">
+        +
+    </button>
+    }
+
+    @for (photo of photos(); track photo.id) {
+    <div class="freestyle__photo" [class.freestyle__photo--selected]="selectedId() === photo.id"
+        [style.left.px]="photo.x" [style.top.px]="photo.y" [style.width.px]="photo.width"
+        [style.height.px]="photo.height" [style.z-index]="photo.zIndex"
+        [style.transform]="'rotate(' + photo.rotation + 'deg)'" [style.clip-path]="clipPath"
+        (pointerdown)="onPhotoDragStart($event, photo)">
+        <img [src]="photo.url" alt="Freestyle photo" draggable="false" />
+
+        @if (selectedId() === photo.id) {
+        <!-- Resize handle -->
+        <div class="freestyle__resize-handle" (pointerdown)="onResizeStart($event, photo)"></div>
+
+        <!-- Action buttons -->
+        <div class="freestyle__actions" (click)="$event.stopPropagation()">
+            <button class="freestyle__action-btn" (click)="onRotate(photo)" title="Rotate">↻</button>
+            <button class="freestyle__action-btn freestyle__action-btn--danger" (click)="onRemovePhoto(photo)"
+                title="Remove">✕</button>
+        </div>
+        }
+    </div>
+    }
+</div>

@@ -1,0 +1,37 @@
+:host {
+    display: block;
+    min-height: 100dvh;
+}
+
+.app-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+}
+
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: var(--gap-sm) var(--gap-lg);
+}
+
+.app-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--gap-md);
+}
+
+.app-footer {
+    display: flex;
+    justify-content: center;
+    padding: var(--gap-md);
+}
+
+.app-footer__text {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+}

@@ -1,3 +1,150 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+/* ───────── Design Tokens ───────── */
+:root {
+    /* Surface palette — deep charcoal base */
+    --surface-0: #0a0a0f;
+    --surface-1: #12121a;
+    --surface-2: #1a1a26;
+    --surface-3: #232333;
+    --surface-4: #2e2e42;
+
+    /* Text */
+    --text-primary: #f0eef6;
+    --text-secondary: #9d9bb0;
+    --text-muted: #6b6980;
+
+    /* Accent — warm coral → magenta gradient */
+    --accent-1: #ff6b6b;
+    --accent-2: #ee5a9d;
+    --accent-3: #c44dff;
+    --accent-gradient: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
+
+    /* Functional */
+    --border-color: rgba(255, 255, 255, 0.06);
+    --border-active: rgba(255, 255, 255, 0.15);
+    --glass-bg: rgba(18, 18, 26, 0.7);
+    --glass-blur: blur(20px);
+
+    /* Spacing */
+    --gap-xs: 0.25rem;
+    --gap-sm: 0.5rem;
+    --gap-md: 1rem;
+    --gap-lg: 1.5rem;
+    --gap-xl: 2rem;
+    --gap-2xl: 3rem;
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 40px rgba(238, 90, 157, 0.15);
+
+    /* Fonts */
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+
+    /* Transitions */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-fast: 150ms var(--ease-out);
+    --transition-normal: 250ms var(--ease-out);
+    --transition-slow: 400ms var(--ease-out);
+}
+
+/* ───────── Global Reset ───────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--surface-0);
+    color: var(--text-primary);
+    min-height: 100dvh;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* Subtle background grain texture */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px;
+}
+
+/* ───────── Scrollbar ───────── */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--surface-4);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* ───────── Selection ───────── */
+::selection {
+    background: rgba(238, 90, 157, 0.3);
+    color: var(--text-primary);
+}
+
+/* ───────── Focus Visible ───────── */
+:focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 2px;
+}
+
+/* ───────── Utility Classes ───────── */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+}
+
+.gradient-border {
+    position: relative;
+}
+
+.gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--accent-gradient);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}

@@ -1,0 +1,90 @@
+<div class="toolbar glass-card">
+    <!-- Logo / Title -->
+    <div class="toolbar__brand">
+        <span class="toolbar__logo">◩</span>
+        <h1 class="toolbar__title">PhotoGrid</h1>
+    </div>
+
+    <div class="toolbar__divider"></div>
+
+    <!-- Mode Toggle -->
+    <div class="toolbar__section">
+        <span class="toolbar__label">Mode</span>
+        <div class="toolbar__toggle-group">
+            <button class="toolbar__toggle" [class.toolbar__toggle--active]="config().mode === 'grid'"
+                (click)="config().mode !== 'grid' && toggleMode()" id="mode-grid">
+                <span class="toggle-icon">▦</span>
+                Grid
+            </button>
+            <button class="toolbar__toggle" [class.toolbar__toggle--active]="config().mode === 'freestyle'"
+                (click)="config().mode !== 'freestyle' && toggleMode()" id="mode-freestyle">
+                <span class="toggle-icon">✦</span>
+                Free
+            </button>
+        </div>
+    </div>
+
+    <!-- Grid Size Presets (only visible in grid mode) -->
+    @if (config().mode === 'grid') {
+    <div class="toolbar__divider"></div>
+
+    <div class="toolbar__section">
+        <span class="toolbar__label">Grid Size</span>
+        <div class="toolbar__preset-group">
+            @for (preset of presetGrids; track preset.label) {
+            <button class="toolbar__preset"
+                [class.toolbar__preset--active]="config().rows === preset.rows && config().cols === preset.cols"
+                (click)="selectPreset(preset.rows, preset.cols)" [id]="'preset-' + preset.label">
+                {{ preset.label }}
+            </button>
+            }
+        </div>
+    </div>
+
+    <!-- Custom Size -->
+    <div class="toolbar__section toolbar__section--compact">
+        <span class="toolbar__label">Custom</span>
+        <div class="toolbar__custom-size">
+            <input type="number" class="toolbar__input" [(ngModel)]="customRows" min="1" max="10" id="custom-rows"
+                aria-label="Custom rows" />
+            <span class="toolbar__input-sep">×</span>
+            <input type="number" class="toolbar__input" [(ngModel)]="customCols" min="1" max="10" id="custom-cols"
+                aria-label="Custom columns" />
+            <button class="toolbar__apply-btn" (click)="applyCustomSize()" id="apply-custom-size">
+                ↵
+            </button>
+        </div>
+    </div>
+
+    <!-- Gap Control -->
+    <div class="toolbar__section toolbar__section--compact">
+        <span class="toolbar__label">Gap</span>
+        <input type="range" class="toolbar__range" [ngModel]="config().gap" (ngModelChange)="updateGap($event)" min="0"
+            max="32" step="1" id="gap-slider" aria-label="Grid gap" />
+        <span class="toolbar__range-value">{{ config().gap }}px</span>
+    </div>
+    }
+
+    <div class="toolbar__divider"></div>
+
+    <!-- Shape Selector -->
+    <div class="toolbar__section">
+        <span class="toolbar__label">Shape</span>
+        <div class="toolbar__shape-group">
+            @for (shape of shapeTypes; track shape) {
+            <button class="toolbar__shape-btn" [class.toolbar__shape-btn--active]="config().shape === shape"
+                (click)="selectShape(shape)" [title]="shapeService.getShapeLabel(shape)" [id]="'shape-' + shape">
+                {{ shapeService.getShapeIcon(shape) }}
+            </button>
+            }
+        </div>
+    </div>
+
+    <div class="toolbar__spacer"></div>
+
+    <!-- Export -->
+    <button class="toolbar__export-btn gradient-border" (click)="onExport()" id="export-btn">
+        <span class="toolbar__export-icon">⬇</span>
+        Export PNG
+    </button>
+</div>
