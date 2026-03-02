@@ -12,7 +12,7 @@ import { ExportService } from '../../services/export.service';
 export class GridCanvasComponent {
     config = input.required<GridConfig>();
 
-    protected readonly photos = signal<(string | null)[]>([]);
+    readonly photos = signal<(string | null)[]>([]);
     private readonly canvasRef = viewChild<ElementRef<HTMLElement>>('canvasArea');
     private readonly exportService = inject(ExportService);
 
@@ -111,6 +111,10 @@ export class GridCanvasComponent {
         const current = [...this.photos()];
         current[index] = null;
         this.photos.set(current);
+    }
+
+    clearAllPhotos(): void {
+        this.photos.set(Array.from({ length: this.totalCells() }, () => null));
     }
 
     async exportCanvas(): Promise<void> {

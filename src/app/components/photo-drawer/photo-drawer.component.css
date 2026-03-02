@@ -1,0 +1,222 @@
+:host {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--gap-sm);
+}
+
+/* ─── FAB Toggle ─── */
+.drawer-fab {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background: var(--surface-3);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
+}
+
+.drawer-fab:hover {
+    background: var(--surface-4);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+}
+
+.drawer-fab--has-photos {
+    background: var(--accent-gradient);
+    border-color: transparent;
+}
+
+.drawer-fab__icon {
+    font-size: 1.1rem;
+}
+
+.drawer-fab__badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    background: var(--accent-1);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+/* ─── Drawer Panel ─── */
+.drawer {
+    width: 240px;
+    max-height: 360px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    animation: slideUp 200ms var(--ease-out);
+    box-shadow: var(--shadow-lg);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Header */
+.drawer__header {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+    padding: var(--gap-sm) var(--gap-md);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.drawer__title {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.drawer__count {
+    font-size: 0.6rem;
+    font-weight: 700;
+    background: var(--surface-4);
+    color: var(--text-secondary);
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+}
+
+.drawer__clear-btn {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    color: #ff4757;
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.drawer__clear-btn:hover {
+    background: rgba(255, 71, 87, 0.15);
+    border-color: rgba(255, 71, 87, 0.5);
+}
+
+/* Scrollable List */
+.drawer__list {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--gap-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+}
+
+/* Empty State */
+.drawer__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-xs);
+    padding: var(--gap-lg) 0;
+    color: var(--text-muted);
+}
+
+.drawer__empty-icon {
+    font-size: 1.5rem;
+    opacity: 0.5;
+}
+
+.drawer__empty p {
+    font-size: 0.7rem;
+}
+
+/* Photo Item */
+.drawer__item {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+}
+
+.drawer__item:hover {
+    background: var(--surface-3);
+}
+
+.drawer__thumb {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--border-color);
+}
+
+.drawer__item-label {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    flex: 1;
+    font-weight: 500;
+}
+
+.drawer__remove-btn {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.drawer__remove-btn:hover {
+    background: rgba(255, 71, 87, 0.15);
+    color: #ff4757;
+}
+
+@media (max-width: 768px) {
+    :host {
+        bottom: 12px;
+        right: 12px;
+    }
+
+    .drawer {
+        width: 200px;
+        max-height: 280px;
+    }
+}

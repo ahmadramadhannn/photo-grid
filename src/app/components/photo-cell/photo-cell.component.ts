@@ -113,7 +113,7 @@ export class PhotoCellComponent {
     private panStart = { x: 0, y: 0 };
 
     onPanStart(event: PointerEvent): void {
-        if (!this.photoUrl() || this.zoom().scale <= 1) return;
+        if (!this.photoUrl()) return;
         event.preventDefault();
         event.stopPropagation();
         this.isPanning = true;

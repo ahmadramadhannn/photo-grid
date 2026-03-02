@@ -11,6 +11,12 @@
     }
   </main>
 
+  <!-- Floating Photo Drawer (grid mode only) -->
+  @if (config().mode === 'grid') {
+  <app-photo-drawer [photos]="gridPhotos()" (photoRemoved)="onDrawerPhotoRemoved($event)"
+    (allPhotosCleared)="onDrawerClearAll()" />
+  }
+
   <footer class="app-footer">
     <span class="app-footer__text">
       PhotoGrid — Drop, arrange, export. ✦

@@ -9,10 +9,11 @@ import {
 } from '../../models/grid.models';
 import { ShapeService } from '../../services/shape.service';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-toolbar',
-    imports: [FormsModule],
+    imports: [FormsModule, RouterLink],
     templateUrl: './toolbar.component.html',
     styleUrl: './toolbar.component.css',
 })
@@ -23,11 +24,13 @@ export class ToolbarComponent {
 
     readonly shapeTypes = Object.values(ShapeType);
     readonly presetGrids = [
+        { label: '1x2', rows: 1, cols: 2 },
         { label: '2×2', rows: 2, cols: 2 },
+        { label: '3×2', rows: 3, cols: 2 },
+        { label: '4×2', rows: 4, cols: 2 },
+        { label: '2×3', rows: 2, cols: 3 },
         { label: '3×3', rows: 3, cols: 3 },
         { label: '4×4', rows: 4, cols: 4 },
-        { label: '2×3', rows: 2, cols: 3 },
-        { label: '3×2', rows: 3, cols: 2 },
     ];
     readonly templates = GRID_TEMPLATES;
 

@@ -13,32 +13,38 @@
     padding: var(--gap-lg);
 }
 
-.grid-canvas__grid {
-    display: grid;
+.grid-canvas__wrapper {
     width: 100%;
     max-width: 700px;
     aspect-ratio: 1 / 1;
-    background: var(--surface-1);
-    border-radius: var(--radius-lg);
+    /* CSS resize needs overflow != visible */
     overflow: auto;
-    /* CSS resize — user can drag bottom-right to resize */
     resize: both;
     min-width: 200px;
     min-height: 200px;
     max-height: 90vh;
     border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
     transition: border-color var(--transition-fast);
 }
 
-.grid-canvas__grid:hover {
+.grid-canvas__wrapper:hover {
     border-color: var(--border-active);
 }
 
-/* Style the resize handle area */
-.grid-canvas__grid::-webkit-resizer {
+.grid-canvas__wrapper::-webkit-resizer {
     background: transparent;
     border: 2px solid var(--accent-2);
     border-radius: 2px;
+}
+
+.grid-canvas__grid {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    background: var(--surface-1);
+    overflow: hidden;
+    border-radius: calc(var(--radius-lg) - 1px);
 }
 
 @media (max-width: 768px) {
@@ -46,7 +52,7 @@
         padding: var(--gap-sm);
     }
 
-    .grid-canvas__grid {
+    .grid-canvas__wrapper {
         max-width: 100%;
     }
 }

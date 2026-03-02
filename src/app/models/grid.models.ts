@@ -120,7 +120,7 @@ export const GRID_TEMPLATES: GridTemplate[] = [
 export const DEFAULT_GRID_CONFIG: GridConfig = {
     rows: 2,
     cols: 2,
-    gap: 4,
+    gap: 0,
     shape: ShapeType.None,
     mode: 'grid',
     autoSize: false,

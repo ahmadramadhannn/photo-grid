@@ -1,8 +1,10 @@
 <div class="grid-canvas" #canvasArea>
-    <div class="grid-canvas__grid" [style]="gridStyle()">
-        @for (i of cellIndices(); track i) {
-        <app-photo-cell [shape]="getCellShape(i)" [photoUrl]="photos()[i]" [cellIndex]="i"
-            (photoSelected)="onPhotoSelected($event)" (photoRemoved)="onPhotoRemoved($event)" />
-        }
+    <div class="grid-canvas__wrapper">
+        <div class="grid-canvas__grid" [style]="gridStyle()">
+            @for (i of cellIndices(); track i) {
+            <app-photo-cell [shape]="getCellShape(i)" [photoUrl]="photos()[i]" [cellIndex]="i"
+                (photoSelected)="onPhotoSelected($event)" (photoRemoved)="onPhotoRemoved($event)" />
+            }
+        </div>
     </div>
 </div>
