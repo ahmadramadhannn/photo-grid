@@ -37,6 +37,9 @@ export class ToolbarComponent {
     customRows = 2;
     customCols = 2;
 
+    customCanvasWidth: number | null = null;
+    customCanvasHeight: number | null = null;
+
     constructor(readonly shapeService: ShapeService) { }
 
     selectPreset(rows: number, cols: number): void {
@@ -47,6 +50,24 @@ export class ToolbarComponent {
         const rows = Math.max(1, Math.min(10, this.customRows));
         const cols = Math.max(1, Math.min(10, this.customCols));
         this.emitConfig({ rows, cols, autoSize: false, template: null });
+    }
+
+    applyCanvasSize(): void {
+        // Validation: Ensure valid numbers or reset to null
+        const width = this.customCanvasWidth && this.customCanvasWidth > 0 ? this.customCanvasWidth : null;
+        const height = this.customCanvasHeight && this.customCanvasHeight > 0 ? this.customCanvasHeight : null;
+
+        // Update local state to reflect potentially cleaned values
+        this.customCanvasWidth = width;
+        this.customCanvasHeight = height;
+
+        this.emitConfig({ canvasWidth: width, canvasHeight: height });
+    }
+
+    resetCanvasSize(): void {
+        this.customCanvasWidth = null;
+        this.customCanvasHeight = null;
+        this.emitConfig({ canvasWidth: null, canvasHeight: null });
     }
 
     selectShape(shape: ShapeType): void {

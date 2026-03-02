@@ -18,6 +18,9 @@ export interface GridConfig {
     autoSize: boolean;
     /** Template: per-cell shape overrides, keyed by cell index */
     template: GridTemplate | null;
+    /** Optional fixed canvas dimensions (null = responsive) */
+    canvasWidth: number | null;
+    canvasHeight: number | null;
 }
 
 export interface PhotoItem {
@@ -125,4 +128,6 @@ export const DEFAULT_GRID_CONFIG: GridConfig = {
     mode: 'grid',
     autoSize: false,
     template: null,
+    canvasWidth: null,
+    canvasHeight: null,
 };

@@ -61,12 +61,34 @@
             <span class="toolbar__input-sep">×</span>
             <input type="number" class="toolbar__input" [(ngModel)]="customCols" min="1" max="10" id="custom-cols"
                 aria-label="Custom columns" />
-            <button class="toolbar__apply-btn" (click)="applyCustomSize()" id="apply-custom-size">
+            <button class="toolbar__apply-btn" (click)="applyCustomSize()" id="apply-custom-size"
+                title="Apply grid cols/rows">
                 ↵
             </button>
         </div>
     </div>
     }
+
+    <!-- Canvas Size Control -->
+    <div class="toolbar__section toolbar__section--compact">
+        <span class="toolbar__label">Canvas Size</span>
+        <div class="toolbar__custom-size">
+            <input type="number" class="toolbar__input" [(ngModel)]="customCanvasWidth" min="100" max="4000"
+                id="custom-canvas-width" placeholder="Responsive" aria-label="Canvas width" />
+            <span class="toolbar__input-sep">×</span>
+            <input type="number" class="toolbar__input" [(ngModel)]="customCanvasHeight" min="100" max="4000"
+                id="custom-canvas-height" placeholder="Responsive" aria-label="Canvas height" />
+            <button class="toolbar__apply-btn" (click)="applyCanvasSize()" id="apply-canvas-size"
+                title="Apply fixed canvas dimensions">
+                ↵
+            </button>
+            @if (config().canvasWidth || config().canvasHeight) {
+            <button class="toolbar__action-btn" (click)="resetCanvasSize()" title="Reset to responsive sizing">
+                ↺
+            </button>
+            }
+        </div>
+    </div>
 
     <!-- Gap Control -->
     <div class="toolbar__section toolbar__section--compact">

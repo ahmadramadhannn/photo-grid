@@ -1,5 +1,38 @@
 <div class="grid-canvas" #canvasArea>
-    <div class="grid-canvas__wrapper">
+    @if (config().autoSize && isCollecting()) {
+    <div class="grid-canvas__collection" [class.grid-canvas__collection--drag]="isDragOverCollection()"
+        (dragover)="onCollectionDragOver($event)" (dragleave)="onCollectionDragLeave($event)"
+        (drop)="onCollectionDrop($event)">
+
+        <div class="collection__content">
+            <div class="collection__icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+            </div>
+            <h2 class="collection__title">Add Photos for Auto Grid</h2>
+            <p class="collection__desc">Drop your photos here or click to browse.</p>
+
+            <label class="collection__browse-btn">
+                Browse Files
+                <input type="file" multiple accept="image/*" class="collection__file-input"
+                    (change)="onCollectionFilesSelected($event)" />
+            </label>
+
+            @if (uploadedCount() > 0) {
+            <div class="collection__actions">
+                <span class="collection__count">{{ uploadedCount() }} photo(s) selected</span>
+                <button class="collection__generate-btn gradient-border" (click)="finishCollecting()">Generate
+                    Grid</button>
+            </div>
+            }
+        </div>
+    </div>
+    } @else {
+    <div class="grid-canvas__wrapper" [style]="wrapperStyle()">
         <div class="grid-canvas__grid" [style]="gridStyle()">
             @for (i of cellIndices(); track i) {
             <app-photo-cell [shape]="getCellShape(i)" [photoUrl]="photos()[i]" [cellIndex]="i"
@@ -7,4 +40,5 @@
             }
         </div>
     </div>
+    }
 </div>
