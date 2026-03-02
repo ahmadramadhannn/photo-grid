@@ -16,17 +16,37 @@ export class GridCanvasComponent {
     private readonly canvasRef = viewChild<ElementRef<HTMLElement>>('canvasArea');
     private readonly exportService = inject(ExportService);
 
-    /** Total number of cells derived from config */
-    protected readonly totalCells = computed(() => this.config().rows * this.config().cols);
+    /**
+     * In auto-size mode, grid dimensions come from the number of uploaded photos.
+     * Otherwise, they come from the config (or template override).
+     */
+    protected readonly effectiveRows = computed(() => {
+        const cfg = this.config();
+        if (cfg.template) return cfg.template.rows;
+        if (cfg.autoSize) return this.autoRows();
+        return cfg.rows;
+    });
+
+    protected readonly effectiveCols = computed(() => {
+        const cfg = this.config();
+        if (cfg.template) return cfg.template.cols;
+        if (cfg.autoSize) return this.autoCols();
+        return cfg.cols;
+    });
+
+    /** Total number of cells */
+    protected readonly totalCells = computed(() => this.effectiveRows() * this.effectiveCols());
 
     /** Array of indices for template iteration */
     protected readonly cellIndices = computed(() =>
         Array.from({ length: this.totalCells() }, (_, i) => i),
     );
 
-    /** Grid CSS styles derived from config */
+    /** Grid CSS styles */
     protected readonly gridStyle = computed(() => {
-        const { rows, cols, gap } = this.config();
+        const rows = this.effectiveRows();
+        const cols = this.effectiveCols();
+        const gap = this.config().gap;
         return {
             'grid-template-columns': `repeat(${cols}, 1fr)`,
             'grid-template-rows': `repeat(${rows}, 1fr)`,
@@ -34,7 +54,36 @@ export class GridCanvasComponent {
         };
     });
 
-    protected readonly currentShape = computed(() => this.config().shape);
+    /** Get shape for a given cell index (template may override global shape) */
+    getCellShape(index: number): ShapeType {
+        const template = this.config().template;
+        if (template && template.cellShapes[index] !== undefined) {
+            return template.cellShapes[index];
+        }
+        return this.config().shape;
+    }
+
+    /** Count of how many photos are actually uploaded */
+    private readonly uploadedCount = computed(() =>
+        this.photos().filter((p) => p !== null).length,
+    );
+
+    /** Auto-compute rows based on uploaded photos (grow grid as user adds photos) */
+    private readonly autoRows = computed(() => {
+        const count = Math.max(1, this.uploadedCount() + 1); // +1 for next empty slot
+        const cols = this.autoCols();
+        return Math.max(1, Math.ceil(count / cols));
+    });
+
+    private readonly autoCols = computed(() => {
+        const count = Math.max(1, this.uploadedCount() + 1);
+        if (count <= 1) return 1;
+        if (count <= 2) return 2;
+        if (count <= 4) return 2;
+        if (count <= 6) return 3;
+        if (count <= 9) return 3;
+        return 4;
+    });
 
     constructor() {
         // Sync photos array size with grid dimensions

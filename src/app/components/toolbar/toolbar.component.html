@@ -24,16 +24,27 @@
         </div>
     </div>
 
-    <!-- Grid Size Presets (only visible in grid mode) -->
+    <!-- Grid-specific controls -->
     @if (config().mode === 'grid') {
     <div class="toolbar__divider"></div>
 
+    <!-- Auto-size toggle -->
     <div class="toolbar__section">
-        <span class="toolbar__label">Grid Size</span>
+        <button class="toolbar__toggle-pill" [class.toolbar__toggle-pill--active]="config().autoSize"
+            (click)="toggleAutoSize()" id="auto-size-toggle" title="Grid grows as you add photos">
+            <span class="toggle-pill__icon">↔</span>
+            Auto
+        </button>
+    </div>
+
+    <!-- Grid Size Presets (hidden when autoSize is on) -->
+    @if (!config().autoSize) {
+    <div class="toolbar__section">
+        <span class="toolbar__label">Size</span>
         <div class="toolbar__preset-group">
             @for (preset of presetGrids; track preset.label) {
             <button class="toolbar__preset"
-                [class.toolbar__preset--active]="config().rows === preset.rows && config().cols === preset.cols"
+                [class.toolbar__preset--active]="!config().template && config().rows === preset.rows && config().cols === preset.cols"
                 (click)="selectPreset(preset.rows, preset.cols)" [id]="'preset-' + preset.label">
                 {{ preset.label }}
             </button>
@@ -55,6 +66,7 @@
             </button>
         </div>
     </div>
+    }
 
     <!-- Gap Control -->
     <div class="toolbar__section toolbar__section--compact">
@@ -72,9 +84,27 @@
         <span class="toolbar__label">Shape</span>
         <div class="toolbar__shape-group">
             @for (shape of shapeTypes; track shape) {
-            <button class="toolbar__shape-btn" [class.toolbar__shape-btn--active]="config().shape === shape"
+            <button class="toolbar__shape-btn"
+                [class.toolbar__shape-btn--active]="!config().template && config().shape === shape"
                 (click)="selectShape(shape)" [title]="shapeService.getShapeLabel(shape)" [id]="'shape-' + shape">
                 {{ shapeService.getShapeIcon(shape) }}
+            </button>
+            }
+        </div>
+    </div>
+
+    <div class="toolbar__divider"></div>
+
+    <!-- Template Selector -->
+    <div class="toolbar__section">
+        <span class="toolbar__label">Template</span>
+        <div class="toolbar__template-group">
+            @for (tmpl of templates; track tmpl.id) {
+            <button class="toolbar__template-btn"
+                [class.toolbar__template-btn--active]="config().template?.id === tmpl.id" (click)="selectTemplate(tmpl)"
+                [title]="tmpl.name" [id]="'tmpl-' + tmpl.id">
+                <span class="template-icon">{{ tmpl.icon }}</span>
+                <span class="template-name">{{ tmpl.name }}</span>
             </button>
             }
         </div>

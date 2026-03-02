@@ -28,6 +28,11 @@
 .cell--has-photo {
     border-style: solid;
     border-color: transparent;
+    cursor: grab;
+}
+
+.cell--has-photo:active {
+    cursor: grabbing;
 }
 
 .cell--has-photo:hover {
@@ -48,6 +53,8 @@
     display: block;
     user-select: none;
     pointer-events: none;
+    transition: transform 100ms ease;
+    transform-origin: center center;
 }
 
 /* Overlay */
@@ -56,6 +63,7 @@
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: var(--gap-sm);
@@ -72,6 +80,32 @@
     }
 }
 
+/* Zoom Controls */
+.cell__zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius-full);
+    padding: 3px 6px;
+}
+
+.cell__zoom-label {
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.8);
+    min-width: 32px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+}
+
+/* Photo Actions */
+.cell__photo-actions {
+    display: flex;
+    gap: var(--gap-sm);
+}
+
 .cell__action {
     width: 36px;
     height: 36px;
@@ -86,6 +120,13 @@
     font-size: 0.85rem;
     cursor: pointer;
     transition: all var(--transition-fast);
+}
+
+.cell__action--sm {
+    width: 24px;
+    height: 24px;
+    font-size: 0.75rem;
+    font-weight: 700;
 }
 
 .cell__action:hover {

@@ -1,19 +1,38 @@
 <div class="cell" [class.cell--has-photo]="photoUrl()" [class.cell--drag-over]="isDragOver()"
     [style.clip-path]="clipPath" (click)="onCellClick()" (mouseenter)="isHovering.set(true)"
     (mouseleave)="isHovering.set(false)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
-    (drop)="onDrop($event)" role="button" tabindex="0"
+    (drop)="onDrop($event)" (wheel)="onWheel($event)" (pointerdown)="onPanStart($event)"
+    (pointermove)="onPanMove($event)" (pointerup)="onPanEnd()" (pointerleave)="onPanEnd()" role="button" tabindex="0"
     [attr.aria-label]="photoUrl() ? 'Photo cell ' + cellIndex() : 'Upload photo to cell ' + cellIndex()">
     @if (photoUrl()) {
-    <img class="cell__image" [src]="photoUrl()" alt="Grid photo" draggable="false" />
+    <img class="cell__image" [src]="photoUrl()" alt="Grid photo" draggable="false" [style.transform]="imageTransform" />
 
     @if (isHovering()) {
     <div class="cell__overlay" (click)="$event.stopPropagation()">
-        <button class="cell__action" (click)="onReplace()" title="Replace photo">
-            <span>🔄</span>
-        </button>
-        <button class="cell__action cell__action--danger" (click)="onRemove($event)" title="Remove photo">
-            <span>✕</span>
-        </button>
+        <!-- Zoom controls -->
+        <div class="cell__zoom-controls">
+            <button class="cell__action cell__action--sm" (click)="onZoomOut($event)" title="Zoom out">
+                <span>−</span>
+            </button>
+            <span class="cell__zoom-label">{{ (zoom().scale * 100).toFixed(0) }}%</span>
+            <button class="cell__action cell__action--sm" (click)="onZoomIn($event)" title="Zoom in">
+                <span>+</span>
+            </button>
+            @if (zoom().scale !== 1 || zoom().offsetX !== 0 || zoom().offsetY !== 0) {
+            <button class="cell__action cell__action--sm" (click)="onResetZoom($event)" title="Reset zoom">
+                <span>↺</span>
+            </button>
+            }
+        </div>
+        <!-- Photo actions -->
+        <div class="cell__photo-actions">
+            <button class="cell__action" (click)="onReplace()" title="Replace photo">
+                <span>🔄</span>
+            </button>
+            <button class="cell__action cell__action--danger" (click)="onRemove($event)" title="Remove photo">
+                <span>✕</span>
+            </button>
+        </div>
     </div>
     }
     } @else {

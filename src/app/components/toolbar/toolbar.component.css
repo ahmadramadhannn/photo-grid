@@ -107,6 +107,39 @@
     font-size: 0.85rem;
 }
 
+/* Auto-size Toggle Pill */
+.toolbar__toggle-pill {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.toolbar__toggle-pill:hover {
+    border-color: var(--border-active);
+    color: var(--text-primary);
+}
+
+.toolbar__toggle-pill--active {
+    background: var(--accent-2);
+    border-color: var(--accent-2);
+    color: #fff;
+}
+
+.toggle-pill__icon {
+    font-size: 0.8rem;
+}
+
 /* Preset Buttons */
 .toolbar__preset-group {
     display: flex;
@@ -237,6 +270,52 @@
     box-shadow: 0 0 8px rgba(238, 90, 157, 0.2);
 }
 
+/* Template Buttons */
+.toolbar__template-group {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.toolbar__template-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.toolbar__template-btn:hover {
+    border-color: var(--border-active);
+    color: var(--text-primary);
+    background: var(--surface-2);
+}
+
+.toolbar__template-btn--active {
+    border-color: var(--accent-3);
+    background: rgba(196, 77, 255, 0.15);
+    color: var(--text-primary);
+    box-shadow: 0 0 8px rgba(196, 77, 255, 0.2);
+}
+
+.template-icon {
+    font-size: 0.75rem;
+}
+
+.template-name {
+    font-size: 0.62rem;
+    letter-spacing: 0.02em;
+}
+
 /* Spacer */
 .toolbar__spacer {
     flex: 1;
@@ -288,5 +367,9 @@
 
     .toolbar__section {
         flex-wrap: wrap;
+    }
+
+    .toolbar__template-group {
+        max-width: 200px;
     }
 }

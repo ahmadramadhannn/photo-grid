@@ -1,5 +1,12 @@
 import { Component, input, output } from '@angular/core';
-import { ShapeType, GridConfig, GridMode, DEFAULT_GRID_CONFIG } from '../../models/grid.models';
+import {
+    ShapeType,
+    GridConfig,
+    GridMode,
+    GridTemplate,
+    DEFAULT_GRID_CONFIG,
+    GRID_TEMPLATES,
+} from '../../models/grid.models';
 import { ShapeService } from '../../services/shape.service';
 import { FormsModule } from '@angular/forms';
 
@@ -22,6 +29,7 @@ export class ToolbarComponent {
         { label: '2×3', rows: 2, cols: 3 },
         { label: '3×2', rows: 3, cols: 2 },
     ];
+    readonly templates = GRID_TEMPLATES;
 
     customRows = 2;
     customCols = 2;
@@ -29,22 +37,41 @@ export class ToolbarComponent {
     constructor(readonly shapeService: ShapeService) { }
 
     selectPreset(rows: number, cols: number): void {
-        this.emitConfig({ rows, cols });
+        this.emitConfig({ rows, cols, autoSize: false, template: null });
     }
 
     applyCustomSize(): void {
         const rows = Math.max(1, Math.min(10, this.customRows));
         const cols = Math.max(1, Math.min(10, this.customCols));
-        this.emitConfig({ rows, cols });
+        this.emitConfig({ rows, cols, autoSize: false, template: null });
     }
 
     selectShape(shape: ShapeType): void {
-        this.emitConfig({ shape });
+        this.emitConfig({ shape, template: null });
     }
 
     toggleMode(): void {
         const newMode: GridMode = this.config().mode === 'grid' ? 'freestyle' : 'grid';
         this.emitConfig({ mode: newMode });
+    }
+
+    toggleAutoSize(): void {
+        this.emitConfig({ autoSize: !this.config().autoSize, template: null });
+    }
+
+    selectTemplate(template: GridTemplate): void {
+        const current = this.config().template;
+        if (current && current.id === template.id) {
+            // Deselect
+            this.emitConfig({ template: null });
+        } else {
+            this.emitConfig({
+                template,
+                rows: template.rows,
+                cols: template.cols,
+                autoSize: false,
+            });
+        }
     }
 
     updateGap(gap: number): void {

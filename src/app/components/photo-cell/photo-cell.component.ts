@@ -1,6 +1,6 @@
 import { Component, input, output, signal, inject, ElementRef, viewChild } from '@angular/core';
 import { ShapeService } from '../../services/shape.service';
-import { ShapeType } from '../../models/grid.models';
+import { ShapeType, CellZoom } from '../../models/grid.models';
 
 @Component({
     selector: 'app-photo-cell',
@@ -16,12 +16,18 @@ export class PhotoCellComponent {
 
     protected readonly isHovering = signal(false);
     protected readonly isDragOver = signal(false);
+    protected readonly zoom = signal<CellZoom>({ scale: 1, offsetX: 0, offsetY: 0 });
 
     private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput');
     private readonly shapeService = inject(ShapeService);
 
     get clipPath(): string {
         return this.shapeService.getClipPath(this.shape());
+    }
+
+    get imageTransform(): string {
+        const z = this.zoom();
+        return `scale(${z.scale}) translate(${z.offsetX}px, ${z.offsetY}px)`;
     }
 
     onCellClick(): void {
@@ -68,5 +74,66 @@ export class PhotoCellComponent {
     onRemove(event: Event): void {
         event.stopPropagation();
         this.photoRemoved.emit(this.cellIndex());
+    }
+
+    onZoomIn(event: Event): void {
+        event.stopPropagation();
+        this.zoom.update((z) => ({
+            ...z,
+            scale: Math.min(5, +(z.scale + 0.25).toFixed(2)),
+        }));
+    }
+
+    onZoomOut(event: Event): void {
+        event.stopPropagation();
+        this.zoom.update((z) => ({
+            ...z,
+            scale: Math.max(0.25, +(z.scale - 0.25).toFixed(2)),
+        }));
+    }
+
+    onResetZoom(event: Event): void {
+        event.stopPropagation();
+        this.zoom.set({ scale: 1, offsetX: 0, offsetY: 0 });
+    }
+
+    /** Scroll wheel to zoom */
+    onWheel(event: WheelEvent): void {
+        if (!this.photoUrl()) return;
+        event.preventDefault();
+        const delta = event.deltaY > 0 ? -0.1 : 0.1;
+        this.zoom.update((z) => ({
+            ...z,
+            scale: Math.max(0.25, Math.min(5, +(z.scale + delta).toFixed(2))),
+        }));
+    }
+
+    /** Pan the zoomed image */
+    private isPanning = false;
+    private panStart = { x: 0, y: 0 };
+
+    onPanStart(event: PointerEvent): void {
+        if (!this.photoUrl() || this.zoom().scale <= 1) return;
+        event.preventDefault();
+        event.stopPropagation();
+        this.isPanning = true;
+        this.panStart = { x: event.clientX, y: event.clientY };
+    }
+
+    onPanMove(event: PointerEvent): void {
+        if (!this.isPanning) return;
+        event.preventDefault();
+        const dx = (event.clientX - this.panStart.x) / this.zoom().scale;
+        const dy = (event.clientY - this.panStart.y) / this.zoom().scale;
+        this.panStart = { x: event.clientX, y: event.clientY };
+        this.zoom.update((z) => ({
+            ...z,
+            offsetX: z.offsetX + dx,
+            offsetY: z.offsetY + dy,
+        }));
+    }
+
+    onPanEnd(): void {
+        this.isPanning = false;
     }
 }
