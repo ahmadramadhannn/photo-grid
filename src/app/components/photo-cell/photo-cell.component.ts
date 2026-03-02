@@ -27,6 +27,7 @@ export class PhotoCellComponent {
 
     get imageTransform(): string {
         const z = this.zoom();
+        // CSS transforms apply right-to-left: translate first (in original space), then scale
         return `scale(${z.scale}) translate(${z.offsetX}px, ${z.offsetY}px)`;
     }
 
