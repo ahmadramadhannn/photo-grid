@@ -22,6 +22,11 @@ export class App {
     this.gridCanvas()?.photos() ?? [],
   );
 
+  /** True when at least one photo has been added to the grid */
+  protected readonly hasPhotos = computed(() =>
+    this.gridPhotos().some(p => p !== null),
+  );
+
   onConfigChange(newConfig: GridConfig): void {
     this.config.set({ ...newConfig });
   }

@@ -135,7 +135,9 @@
     <div class="toolbar__spacer"></div>
 
     <!-- Export -->
-    <button class="toolbar__export-btn gradient-border" (click)="onExport()" id="export-btn">
+    <button class="toolbar__export-btn gradient-border" (click)="onExport()" id="export-btn" [disabled]="!hasPhotos()"
+        [class.toolbar__export-btn--disabled]="!hasPhotos()"
+        [title]="hasPhotos() ? 'Export grid as PNG' : 'Add photos to export'">
         <span class="toolbar__export-icon">⬇</span>
         Export PNG
     </button>

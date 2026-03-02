@@ -19,6 +19,7 @@ import { RouterLink } from '@angular/router';
 })
 export class ToolbarComponent {
     config = input<GridConfig>(DEFAULT_GRID_CONFIG);
+    hasPhotos = input<boolean>(false);
     configChange = output<GridConfig>();
     exportRequest = output<void>();
 

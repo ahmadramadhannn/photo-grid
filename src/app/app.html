@@ -1,6 +1,7 @@
 <div class="app-shell">
   <header class="app-header">
-    <app-toolbar [config]="config()" (configChange)="onConfigChange($event)" (exportRequest)="onExport()" />
+    <app-toolbar [config]="config()" [hasPhotos]="hasPhotos()" (configChange)="onConfigChange($event)"
+      (exportRequest)="onExport()" />
   </header>
 
   <main class="app-main">
